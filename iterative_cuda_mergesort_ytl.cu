@@ -14,6 +14,7 @@
 #include <time.h>
 #include <errno.h>
 #include <string.h>
+#include <math.h>
 
 extern "C" {
     #include "splitmix64.h"
@@ -1137,6 +1138,14 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
 
 }
 
+double u64_to_double_conv(uint64_t in_val) {
+
+    double out_val = 0.0;
+    memcpy(&out_val, &in_val, sizeof(out_val));
+    return out_val;
+
+}
+
 /* Driver program to test above functions */
 int main() {
 
@@ -1185,7 +1194,11 @@ int main() {
 
     double *arr = (double*) malloc(input_array_length * sizeof(*arr));
     for (long index = 0; index < input_array_length; index++) {
-            arr[index] = xoshiro256starstar_get_next();
+            double temp = u64_to_double_conv(xoshiro256starstar_get_next());
+            if (isnan(temp)) {
+                temp = INFINITY;
+            }
+            arr[index] = temp;
     }
 
     printf("Starting sorting on GPU...\n");
