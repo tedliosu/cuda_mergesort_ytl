@@ -1149,8 +1149,9 @@ double u64_to_double_conv(uint64_t in_val) {
 /* Driver program to test above functions */
 int main() {
 
-    bool sort_non_descending = false;
+    bool sort_non_descending = true;
     long input_array_length = 0;
+    const char sort_non_descending_req_char = 'T';
     char *fgets_return_stat = NULL;
     char user_input[MAX_USER_INPUT_LEN + 1] = {'\0'};
     char *remaining_non_ulong;
@@ -1189,6 +1190,16 @@ int main() {
 
     }
 
+    printf("Enter anything starting with \"T\" (without the quotes) for\n"
+            "sorting non-descending, anything else (including nothing)\n"
+            "for sorting non-ascending: ");
+    fgets_return_stat = fgets(user_input, MAX_USER_INPUT_LEN + 1, stdin);
+    // Remove any trailing newline and carriage returns
+    user_input[strcspn(user_input, "\r\n")] = '\0';
+    if (user_input[0] != sort_non_descending_req_char) {
+        sort_non_descending = false;
+    }
+
     set_seed_splitmix64(RAND_NUM_SEED);
     init_xoshiro256starstar();
 
@@ -1201,7 +1212,7 @@ int main() {
             arr[index] = temp;
     }
 
-    printf("Starting sorting on GPU...\n");
+    printf("\nStarting sorting on GPU...\n");
     struct timespec start_func_call, end_func_call;
     timespec_get(&start_func_call, TIME_UTC);
     parallel_merge_sort(arr, input_array_length, sort_non_descending);
@@ -1233,7 +1244,8 @@ int main() {
     }
 
     if (sort_correctly) {
-         printf("Sorting succeeded using parallel_merge_sort!\n");
+         printf("Sorting %s succeeded using parallel_merge_sort!\n",
+                 sort_non_descending ? "non-descending" : "non-ascending");
     }
 
     printf("Time took to sort array of length %ld on GPU: %lf seconds.\n",
