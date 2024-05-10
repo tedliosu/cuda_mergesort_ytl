@@ -2,6 +2,8 @@
 .PHONY: clean all
 
 EXE_NAME=main
+PROF_KERN_NAME=global_mem_mergesort_step
+PROF_RES_FILE_BASENAME=$(PROF_KERN_NAME)_first
 
 SRC_FILES := $(wildcard *.cu) $(wildcard *.c)
 
@@ -15,6 +17,12 @@ all:
 run: clean all
 	./$(EXE_NAME)
 
+profile: clean all
+	$(info $(shell echo "---Please enter sudo password when prompted---"))
+	sudo --set-home $(shell which ncu) --kernel-name $(PROF_KERN_NAME) \
+		--launch-count 1 --section "regex:.*" --force-overwrite \
+		--export $(PROF_RES_FILE_BASENAME) ./$(EXE_NAME)
+
 clean:
-	rm -rf $(EXE_NAME)
+	rm -rf $(EXE_NAME) $(PROF_RES_FILE_BASENAME).ncu-rep
 
