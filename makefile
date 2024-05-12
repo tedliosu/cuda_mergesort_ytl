@@ -5,10 +5,10 @@ EXE_NAME=main
 PROF_KERN_NAME=global_mem_mergesort_step
 PROF_RES_FILE_BASENAME=$(PROF_KERN_NAME)_first
 
-SRC_FILES := $(wildcard *.cu) $(wildcard *.c)
+MAIN_SRC_FILES := iterative_cuda_mergesort_ytl.cu $(wildcard *.c)
 
 all:
-	nvcc $(SRC_FILES) --compiler-options -O3 --debug \
+	nvcc $(MAIN_SRC_FILES) --compiler-options -O3 --debug \
 		--linker-options -lm \
 		--generate-code=arch=compute_$(shell __nvcc_device_query),code=sm_$(shell \
 		__nvcc_device_query) \
