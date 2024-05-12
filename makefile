@@ -10,8 +10,9 @@ MAIN_SRC_FILES := iterative_cuda_mergesort_ytl.cu $(wildcard *.c)
 all:
 	nvcc $(MAIN_SRC_FILES) --compiler-options -O3 --debug \
 		--linker-options -lm \
-		--generate-code=arch=compute_$(shell __nvcc_device_query),code=sm_$(shell \
-		__nvcc_device_query) \
+		--generate-code=arch=compute_$(shell nvidia-smi --query-gpu=compute_cap \
+		--format=csv,noheader | tr -d "\.\n"),code=sm_$(shell \
+		nvidia-smi --query-gpu=compute_cap --format=csv,noheader | tr -d "\.\n") \
 		--generate-line-info --ptxas-options --verbose -o $(EXE_NAME)
 
 run: clean all
