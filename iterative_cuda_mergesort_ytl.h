@@ -6,6 +6,7 @@
 
 #include <cuda_runtime.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /*
  * Number of threads per threadblock to be used for portion of program which
@@ -58,3 +59,5 @@ __global__ void global_mem_mergesort_step(double* aux_array,
                                           long max_blocks_per_virtual_grid,
                                           long buff_size,
                                           bool sort_non_descending);
+
+double u64_to_double_conv(uint64_t in_val);
