@@ -7,6 +7,7 @@
 #include <cuda_runtime.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /*
  * Number of threads per threadblock to be used for portion of program which
@@ -59,4 +60,24 @@ __global__ void global_mem_mergesort_step(double* aux_array,
                                           long max_blocks_per_virtual_grid,
                                           long buff_size,
                                           bool sort_non_descending);
+
+__device__ void global_parallel_merge_using_corank(double* first_input_array,
+                                                   double* second_input_array,
+                                                   double* dest_array,
+                                                   long first_input_array_len,
+                                                   long second_input_array_len,
+                                                   double* first_array_buff,
+                                                   double* second_array_buff,
+                                                   long* corank_broadcast_buff,
+                                                   long data_buff_len_per_arr,
+                                                   long max_num_blocks_per_virtual_grid,
+                                                        long num_blocks_this_virtual_grid,
+                                                        bool sort_non_descending);
+
+__device__ long determine_corank(long dest_arr_starting_index,
+                                                 double *first_input_arr,
+                                                 long first_input_arr_len,
+                                                 double *second_input_arr,
+                                                 long second_input_arr_len,
+                                                 bool sort_non_descending);
 

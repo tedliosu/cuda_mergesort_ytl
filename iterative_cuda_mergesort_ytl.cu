@@ -1,18 +1,5 @@
-/* Iterative C program for merge sort */
-/*
- * 
- * This CUDA mergesort program uses code and algorithms from Dr. Steven S.
- * Lumetta, Dr. Wen-mei W. Hwu , Dr. David Kirk, Dr. Christian Siebert, and
- * Dr. Jesper Larsson Träff, as well as the iterative mergesort algorithm as
- * detailed on the https://www.geeksforgeeks.org/iterative-merge-sort/ page :)
- * Author: Yensong Ted Li
- *
- */
-#include <stdlib.h>
-#include <stdio.h>
+
 #include <stdbool.h>
-#include <time.h>
-#include <string.h>
 #include "iterative_cuda_mergesort_ytl.h"
 extern "C" {
     #include "main.h"
@@ -439,6 +426,8 @@ __device__ void block_level_parallel_merge_using_corank(double *first_input_arra
 
 }
 
+#ifndef CIRC_BUFF
+
 /*!
  * Using the determine_corank device function, load-balances/parallelizes the
  * process of merging two sorted input arrays into an output array across
@@ -737,6 +726,7 @@ __device__ void global_parallel_merge_using_corank(double *first_input_array,
 
 }
 
+#endif
 
 /*!
  * This is a global kernel function which uses CUDA shared memory/HIP local data

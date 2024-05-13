@@ -17,7 +17,7 @@ extern "C" {
 #define APPEND_NEXT_SMALLEST_FLAG 1
 #define NUM_APPEND_OPTS 2
 #define SORT_NON_DESC_FLAG 1
-#define NUM_MERGE_PHASES_PER_TBLOCK 32
+#define NUM_MERGE_PHASES_PER_TBLOCK 512
 
 struct glob_merg_step_kern_param_tupl {
 
@@ -226,7 +226,7 @@ ParameterizedTest(struct glob_merg_step_kern_param_tupl *test_tupl, params, glob
             "\"total_array_size\": %ld\n\t"
             "\"sorted_subarr_init_max_size\": %ld\n\t",
             test_tupl->total_array_size, test_tupl->sorted_subarr_init_max_size);
-    printf("\"sort_non_descending:\" %s\n", test_tupl->sort_non_descending ? "True" : "False");
+    printf("\"sort_non_descending\": %s\n", test_tupl->sort_non_descending ? "True" : "False");
 
     long sorted_remainder_subarr_len = test_tupl->total_array_size % test_tupl->sorted_subarr_init_max_size;
     long num_sorted_subarrs = test_tupl->total_array_size / test_tupl->sorted_subarr_init_max_size;

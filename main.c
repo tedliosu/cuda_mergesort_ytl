@@ -1,3 +1,14 @@
+/* Iterative C program for merge sort */
+/*
+ * 
+ * This CUDA mergesort program uses code and algorithms from Dr. Steven S.
+ * Lumetta, Dr. Wen-mei W. Hwu , Dr. David Kirk, Dr. Christian Siebert, and
+ * Dr. Jesper Larsson Träff, as well as the iterative mergesort algorithm as
+ * detailed on the https://www.geeksforgeeks.org/iterative-merge-sort/ page :)
+ * Author: Yensong Ted Li
+ *
+ */
+
 #include <errno.h>
 #include <math.h>
 #include <stdbool.h>
