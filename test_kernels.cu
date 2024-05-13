@@ -222,6 +222,12 @@ ParameterizedTestParameters(params, glob_merg_step_kern_tests) {
 ParameterizedTest(struct glob_merg_step_kern_param_tupl *test_tupl, params, glob_merg_step_kern_tests,
                    .init = setup_glob_merg_step_kern_tests, .fini = teardown_glob_merg_step_kern_tests) {
 
+    printf("Started running sub-test with parameters:\n\t"
+            "\"total_array_size\": %ld\n\t"
+            "\"sorted_subarr_init_max_size\": %ld\n\t",
+            test_tupl->total_array_size, test_tupl->sorted_subarr_init_max_size);
+    printf("\"sort_non_descending:\" %s\n", test_tupl->sort_non_descending ? "True" : "False");
+
     long sorted_remainder_subarr_len = test_tupl->total_array_size % test_tupl->sorted_subarr_init_max_size;
     long num_sorted_subarrs = test_tupl->total_array_size / test_tupl->sorted_subarr_init_max_size;
 

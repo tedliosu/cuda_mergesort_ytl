@@ -28,6 +28,9 @@ tests:
 run: clean all
 	./$(MAIN_EXE_NAME)
 
+run_tests: clean tests
+	./$(TESTS_EXE_NAME) -j1
+
 profile: clean all
 	$(info $(shell echo "---Please enter sudo password when prompted---"))
 	sudo --set-home $(shell which ncu) --kernel-name $(PROF_KERN_NAME) \
