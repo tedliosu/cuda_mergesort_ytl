@@ -8,16 +8,16 @@
 #include <criterion/parameterized.h>
 #include <criterion/criterion.h>
 extern "C" {
+     #include "main.h"
      #include "splitmix64.h"
      #include "xoshiro256starstar.h"
 }
 #include "iterative_cuda_mergesort_ytl.h"
 #define RAND_NUM_SEED 38972
 #define APPEND_NEXT_SMALLEST_FLAG 1
+#define NUM_APPEND_OPTS 2
 #define SORT_NON_DESC_FLAG 1
 #define NUM_MERGE_PHASES_PER_TBLOCK 32
-#define NUM_ARRAYS_PER_MERGE 2
-#define NUM_TILES_GLOBAL_MEM_SORT NUM_ARRAYS_PER_MERGE
 
 struct glob_merg_step_kern_param_tupl {
 
@@ -36,8 +36,6 @@ static long sorted_subarr_init_sizes[] =
                         65536};
 static long arr_nums_sorted_subarrays[] =
          {1, 2, 3, 36, 257, 1024};
-static bool arr_appnd_nxt_smallest_subarr[] = 
-         {true, false};
 static bool sort_non_desc_arr[] =
          {true, false};
 
@@ -167,11 +165,9 @@ ParameterizedTestParameters(params, glob_merg_step_kern_tests) {
                                            sizeof(*sorted_subarr_init_sizes);
     long arr_len_num_sorted_subarrays = sizeof(arr_nums_sorted_subarrays) /
                                            sizeof(*arr_nums_sorted_subarrays);
-    long arr_len_append_next_smallest_subarray = sizeof(arr_appnd_nxt_smallest_subarr) /
-                                                    sizeof (*arr_appnd_nxt_smallest_subarr);
     long arr_len_sort_non_descending = sizeof(sort_non_desc_arr) / sizeof (*sort_non_desc_arr);
     const long num_tups = arr_len_sorted_subarray_sizes * arr_len_num_sorted_subarrays *
-                                arr_len_append_next_smallest_subarray * arr_len_sort_non_descending;
+                                NUM_APPEND_OPTS * arr_len_sort_non_descending;
 
     struct glob_merg_step_kern_param_tupl *test_params =
         (struct glob_merg_step_kern_param_tupl*) cr_malloc(sizeof(struct glob_merg_step_kern_param_tupl) * num_tups);
@@ -184,7 +180,7 @@ ParameterizedTestParameters(params, glob_merg_step_kern_tests) {
             index_sort_non_desc_arr < arr_len_sort_non_descending; ++index_sort_non_desc_arr) {
 
         for (long index_arr_appnd_nxt_smallest_subarr = 0;
-                index_arr_appnd_nxt_smallest_subarr < arr_len_append_next_smallest_subarray;
+                index_arr_appnd_nxt_smallest_subarr < NUM_APPEND_OPTS;
                 ++index_arr_appnd_nxt_smallest_subarr) {
 
             for (long index_arr_num_sorted_subarrs = 0;
@@ -198,7 +194,7 @@ ParameterizedTestParameters(params, glob_merg_step_kern_tests) {
                                       index_arr_num_sorted_subarrs * arr_len_sorted_subarray_sizes + 
                                       index_arr_appnd_nxt_smallest_subarr * arr_len_num_sorted_subarrays *
                                                                                   arr_len_sorted_subarray_sizes +
-                                      index_sort_non_desc_arr * arr_len_append_next_smallest_subarray *
+                                      index_sort_non_desc_arr * NUM_APPEND_OPTS *
                                                        arr_len_num_sorted_subarrays * arr_len_sorted_subarray_sizes;
 
                     test_params[param_idx].sorted_subarr_init_max_size = sorted_subarr_init_sizes[index_arr_sorted_subarr_sizes];

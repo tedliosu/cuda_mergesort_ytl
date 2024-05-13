@@ -1,6 +1,6 @@
 
 /*!
- * Main header file containing CUDA kernel function prototypes and key kernel
+ * Auxillary header file containing CUDA kernel function prototypes and key kernel
  * parameters
  */
 
@@ -60,4 +60,3 @@ __global__ void global_mem_mergesort_step(double* aux_array,
                                           long buff_size,
                                           bool sort_non_descending);
 
-double u64_to_double_conv(uint64_t in_val);
