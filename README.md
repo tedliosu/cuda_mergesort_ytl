@@ -18,5 +18,7 @@ Note: only Linux distributions are supported for now; program doesn't have Windo
       any outside help would be appreciated; more than willing to refactor code to
       make unit tests easier :)</s> Done on May 13 2024 :)
 
-5. Port over application to Windows maybe?
+5. Prevent people from entering too large array sizes based on max total VRAM (total VRAM - 512 mib basically).
+
+6. Port over application to Windows maybe?
 

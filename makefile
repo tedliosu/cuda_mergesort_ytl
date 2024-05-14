@@ -63,13 +63,13 @@ run_tests_circ_buff: clean tests_circ_buff
 profile: clean all
 	$(info $(shell echo "---Please enter sudo password when prompted---"))
 	sudo --set-home $(shell which ncu) --kernel-name $(PROF_KERN_NAME) \
-		--launch-count 1 --section "regex:.*" --force-overwrite \
+		--launch-count 1 --set full --force-overwrite \
 		--export $(PROF_RES_FILE_BASENAME) ./$(MAIN_EXE_NAME_LIN_BUFF)
 
 profile_circ_buff: clean circ_buff
 	$(info $(shell echo "---Please enter sudo password when prompted---"))
 	sudo --set-home $(shell which ncu) --kernel-name $(PROF_KERN_NAME) \
-		--launch-count 1 --section "regex:.*" --force-overwrite \
+		--launch-count 1 --set full --force-overwrite \
 		--export $(PROF_RES_FILE_BASE_CIRC_BUFF) ./$(MAIN_EXE_NAME_CIRC_BUFF)
 
 
