@@ -14,7 +14,9 @@ Note: only Linux distributions are supported for now; program doesn't have Windo
 3. <s>Add support for sorting 64-bit integer types as compile-time feature</s> Author deems
       this not very important right now.
 
-4. Add unit tests at least for the CUDA kernels - Author is finding this difficult;
+4. <s>Add unit tests at least for the CUDA kernels - Author is finding this difficult;
       any outside help would be appreciated; more than willing to refactor code to
-      make unit tests easier :)
+      make unit tests easier :)</s> Done on May 13 2024 :)
+
+5. Port over application to Windows maybe?
 
