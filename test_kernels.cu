@@ -90,9 +90,13 @@ bool is_sorted_properly(double *output_arr, long output_arr_len,
     long sorted_remainder_subarr_len = output_arr_len % max_sorted_subarr_size;
     long num_sorted_subarrs = output_arr_len / max_sorted_subarr_size;
     long failure_idx_output_arr = NO_FAILURE_IDX_FLAG;
+    long all_uniq_counts_sum = 0;
+    long avg_uniq_counts_per_subarr = 0;
     
     for (long subarr_id = 0; subarr_id < num_sorted_subarrs; ++subarr_id) {
         
+        long num_uniq_nums_per_subarray = 1;
+
         for (long index_in_subarr = 1; index_in_subarr < max_sorted_subarr_size; ++index_in_subarr) {
 
             long mapped_out_arr_idx = subarr_id * max_sorted_subarr_size + index_in_subarr;
@@ -104,9 +108,19 @@ bool is_sorted_properly(double *output_arr, long output_arr_len,
                 break;
             }
 
+            uint64_t first_num_u64 = double_to_u64_conv(output_arr[mapped_out_arr_idx - 1]);
+            uint64_t second_num_u64 = double_to_u64_conv(output_arr[mapped_out_arr_idx]);
+            if (second_num_u64 != first_num_u64) {
+                ++num_uniq_nums_per_subarray;
+            }
+
         }
 
+        all_uniq_counts_sum += num_uniq_nums_per_subarray;
+
     }
+    
+    long num_uniq_nums_remainder_subarr = 1;
 
     if (sorted_properly && sorted_remainder_subarr_len > 0) {
         
@@ -120,9 +134,23 @@ bool is_sorted_properly(double *output_arr, long output_arr_len,
                 break;
             }
 
+            uint64_t first_num_u64 = double_to_u64_conv(output_arr[mapped_out_arr_idx - 1]);
+            uint64_t second_num_u64 = double_to_u64_conv(output_arr[mapped_out_arr_idx]);
+            if (second_num_u64 != first_num_u64) {
+                ++num_uniq_nums_remainder_subarr;
+            }
+
         }
 
     }
+
+    if (sorted_remainder_subarr_len > 0) {
+        avg_uniq_counts_per_subarr = (all_uniq_counts_sum + num_uniq_nums_remainder_subarr) / (1 + num_sorted_subarrs);
+    } else {
+        avg_uniq_counts_per_subarr = all_uniq_counts_sum  / num_sorted_subarrs;
+    }
+
+    printf("\tAvg num of uniq nums per checked sorted subarray is %ld.\n", avg_uniq_counts_per_subarr);
 
     if (failure_idx_output_arr != NO_FAILURE_IDX_FLAG) {
         printf("Check failed at index %ld in parameter \"output_arr\".", failure_idx_output_arr);
@@ -350,7 +378,7 @@ ParameterizedTest(struct glob_merg_step_kern_param_tupl *test_tupl, params, glob
     if (arr_len_per_block > NUM_ARRAYS_PER_MERGE * test_tupl->sorted_subarr_init_max_size) {
         arr_len_per_block = NUM_ARRAYS_PER_MERGE * test_tupl->sorted_subarr_init_max_size;
     }
-    printf("\tComputed \"arr_len_per_block\" for this test is %ld\n", arr_len_per_block);
+    // printf("\tComputed \"arr_len_per_block\" for this test is %ld\n", arr_len_per_block);
     long max_blocks_per_virtual_grid = (NUM_ARRAYS_PER_MERGE *
                                              test_tupl->sorted_subarr_init_max_size) / arr_len_per_block;
     dim3 block_size_global_mem_sort(THREADS_PER_BLOCK_GLOBAL_MEM_SORT, 1, 1);

@@ -38,9 +38,10 @@ int main() {
 
   while (fgets_return_stat == NULL) {
     printf(
-        "Enter the size of the array to be sorted (BY ENTERING A SIZE YOU ALSO\n"
-              "\tAGREE TO NOT LAUNCH NEW APPS ON THE PRIMARY GPU WHEN THIS PROGRAM\n"
-              "\tIS RUNNING): ");
+        "Enter the size of the array to be sorted (BY ENTERING A SIZE YOU "
+        "ALSO\n"
+        "\tAGREE TO NOT LAUNCH NEW APPS ON THE PRIMARY GPU WHEN THIS PROGRAM\n"
+        "\tIS RUNNING): ");
     fgets_return_stat = fgets(user_input, MAX_USER_INPUT_LEN + 1, stdin);
     // Remove any trailing newline and carriage returns
     user_input[strcspn(user_input, "\r\n")] = '\0';
@@ -100,6 +101,7 @@ int main() {
   printf("Ended sorting on GPU!\n");
 
   bool sort_correctly = true;
+  long uniq_nums_count = 0;
 
   for (long index = 1; index < input_array_length; ++index) {
     if (sort_non_descending && arr[index - 1] > arr[index]) {
@@ -120,6 +122,12 @@ int main() {
       sort_correctly = false;
       break;
     }
+    // Get number of unique numbers for sanity check.
+    uint64_t first_num_u64 = double_to_u64_conv(arr[index - 1]);
+    uint64_t second_num_u64 = double_to_u64_conv(arr[index]);
+    if (second_num_u64 != first_num_u64) {
+      ++uniq_nums_count;
+    }
   }
 
   if (sort_correctly) {
@@ -127,11 +135,14 @@ int main() {
            sort_non_descending ? "non-descending" : "non-ascending");
   }
 
-  printf("Time took to sort array of length %ld on GPU: %lf seconds.\n",
-         input_array_length,
-         difftime(end_func_call.tv_sec, start_func_call.tv_sec) +
-             (((double)(end_func_call.tv_nsec - start_func_call.tv_nsec)) /
-              NUM_NS_PER_SEC));
+  printf(
+      "Time took to sort array of length %ld on GPU: %lf seconds.\n"
+      "We ended up with %ld unique numbers.\n",
+      input_array_length,
+      difftime(end_func_call.tv_sec, start_func_call.tv_sec) +
+          (((double)(end_func_call.tv_nsec - start_func_call.tv_nsec)) /
+           NUM_NS_PER_SEC),
+      uniq_nums_count);
 
   free(arr);
 

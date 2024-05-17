@@ -1070,7 +1070,7 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
     CHECK(cudaEventElapsedTime(&sort_time_without_host_transfers, start_on_device, stop_on_device));
 
     printf("Time took for mergesort to complete "
-               "WITHOUT copy from and to host: %f seconds\n", sort_time_without_host_transfers / NUM_MS_PER_SEC);
+               "WITHOUT copy from and to host: %f seconds.\n", sort_time_without_host_transfers / NUM_MS_PER_SEC);
 
     CHECK(cudaMemcpy(arr, arr_on_device, arr_len * sizeof(*arr_on_device), cudaMemcpyDeviceToHost));
 
@@ -1084,6 +1084,14 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
 double u64_to_double_conv(uint64_t in_val) {
 
     double out_val = 0.0;
+    memcpy(&out_val, &in_val, sizeof(out_val));
+    return out_val;
+
+}
+
+uint64_t double_to_u64_conv(double in_val) {
+
+    uint64_t out_val = 0;
     memcpy(&out_val, &in_val, sizeof(out_val));
     return out_val;
 
