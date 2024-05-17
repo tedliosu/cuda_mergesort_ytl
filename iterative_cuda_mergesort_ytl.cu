@@ -11,7 +11,7 @@ extern "C" {
 #define NUM_MS_PER_SEC 1000.0f
 #define NUM_TOTAL_ARRAYS_MERGESORT NUM_ARRAYS_PER_MERGE
 #define NUM_INDICIES_PER_SUBARRAY 2
-#define FREE_VRAM_BUFFER_ZONE_BYTES 134217728
+#define FREE_VRAM_BUFFER_ZONE_BYTES 268435456 // 256 MiB
 
 /*!
  * Given the first five parameters, compute and store within the second 5 parameters
