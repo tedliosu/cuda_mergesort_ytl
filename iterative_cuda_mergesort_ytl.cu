@@ -11,7 +11,7 @@ extern "C" {
 #define NUM_MS_PER_SEC 1000.0f
 #define NUM_TOTAL_ARRAYS_MERGESORT NUM_ARRAYS_PER_MERGE
 #define NUM_INDICIES_PER_SUBARRAY 2
-
+#define FREE_VRAM_BUFFER_ZONE_BYTES 134217728
 
 /*!
  * Given the first five parameters, compute and store within the second 5 parameters
@@ -1097,7 +1097,8 @@ long get_max_arr_len_for_dev(size_t arr_elem_size) {
 
     CHECK(cudaMemGetInfo(&free_vram, NULL));
 
-    arr_len = ((long) free_vram) / (((long) arr_elem_size) * NUM_ARRAYS_PER_MERGE);
+    arr_len = ((long) free_vram - FREE_VRAM_BUFFER_ZONE_BYTES) /
+                  (((long) arr_elem_size) * NUM_ARRAYS_PER_MERGE);
 
     return arr_len;
 
