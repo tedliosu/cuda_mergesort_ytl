@@ -58,7 +58,7 @@ int main() {
 
         printf(
             "Error: invalid input - please press enter again to bring back up\n"
-            "    array size prompt if neccessary.\n");
+            "\tarray size prompt if neccessary.\n");
         // Clear remainder of input buffer
         int next_char = getchar();
 
@@ -70,9 +70,9 @@ int main() {
   }
 
   printf(
-      "Enter anything starting with \"T\" (without the quotes) for\n"
-      "sorting non-descending, anything else (including nothing)\n"
-      "for sorting non-ascending: ");
+      "Enter anything starting with \"T\" (without the quotes) for sorting\n"
+      "\tnon-descending, anything else (including nothing) for\n"
+      "\tsorting non-ascending: ");
   fgets_return_stat = fgets(user_input, MAX_USER_INPUT_LEN + 1, stdin);
   // Remove any trailing newline and carriage returns
   user_input[strcspn(user_input, "\r\n")] = '\0';
