@@ -40,7 +40,8 @@ Note: only Linux distributions are supported for now on this main branch.
       any outside help would be appreciated; more than willing to refactor code to
       make unit tests easier :)</s> Done on May 13 2024 :)
 
-5. Prevent people from entering too large array sizes based on max total VRAM (total VRAM - 512 mib basically).
+5. <s>Prevent people from entering too large array sizes based on max total VRAM (total VRAM - 512 mib basically).</s>
+      Done on May 17 2024, and didn't even have to use any special formulas :)
 
 6. Port over application to Windows maybe?
 
