@@ -1089,3 +1089,18 @@ double u64_to_double_conv(uint64_t in_val) {
 
 }
 
+long get_max_arr_len_for_dev(size_t arr_elem_size) {
+
+    long arr_len = 0;
+
+    size_t free_vram = 0;
+
+    CHECK(cudaMemGetInfo(&free_vram, NULL));
+
+    arr_len = ((long) free_vram) / (((long) arr_elem_size) * NUM_ARRAYS_PER_MERGE);
+
+    return arr_len;
+
+
+}
+

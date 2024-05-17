@@ -1,6 +1,6 @@
 /* Iterative C program for merge sort */
 /*
- * 
+ *
  * This CUDA mergesort program uses code and algorithms from Dr. Steven S.
  * Lumetta, Dr. Wen-mei W. Hwu , Dr. David Kirk, Dr. Christian Siebert, and
  * Dr. Jesper Larsson Träff, as well as the iterative mergesort algorithm as
@@ -9,6 +9,7 @@
  *
  */
 
+#include "main.h"
 #include <errno.h>
 #include <math.h>
 #include <stdbool.h>
@@ -16,7 +17,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "main.h"
 #include "splitmix64.h"
 #include "xoshiro256starstar.h"
 
@@ -37,7 +37,10 @@ int main() {
   char* remaining_non_ulong;
 
   while (fgets_return_stat == NULL) {
-    printf("Enter the size of the array to be sorted: ");
+    printf(
+        "Enter the size of the array to be sorted (BY ENTERING A SIZE YOU ALSO\n"
+              "\tAGREE TO NOT LAUNCH NEW APPS ON THE PRIMARY GPU WHEN THIS PROGRAM\n"
+              "\tIS RUNNING): ");
     fgets_return_stat = fgets(user_input, MAX_USER_INPUT_LEN + 1, stdin);
     // Remove any trailing newline and carriage returns
     user_input[strcspn(user_input, "\r\n")] = '\0';
@@ -49,7 +52,8 @@ int main() {
       int strtol_error_status = errno;
 
       if (strtol_error_status != 0 || remaining_non_ulong[0] != '\0' ||
-          input_array_length < 1) {
+          input_array_length < 1 ||
+          input_array_length > get_max_arr_len_for_dev(sizeof(double))) {
         fgets_return_stat = NULL;
 
         printf(
