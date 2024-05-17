@@ -37,6 +37,7 @@ int main() {
   char* remaining_non_ulong;
 
   while (fgets_return_stat == NULL) {
+    // printf("WTF IS THIS: %ld.\n", get_max_arr_len_for_dev(sizeof(double)));
     printf(
         "Enter the size of the array to be sorted (BY ENTERING A SIZE YOU "
         "ALSO\n"
