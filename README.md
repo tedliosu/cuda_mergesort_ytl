@@ -16,8 +16,8 @@ Open a terminal interface and run:
        due to implementation overly-aggressively attempting to conserve memory bandwidth; Author
        thought this version would perform better than linear buffer version but unfortunately
        the circular buffer version was designed for running fast on older GPU architectures.)
-- `make tests` to run kernel unit tests for linear buffer version of program
-- `make tests_circ_buff` to run kernel unit tests for circular buffer version of program
+- `make run_tests` to run kernel unit tests for linear buffer version of program
+- `make run_tests_circ_buff` to run kernel unit tests for circular buffer version of program
 - `make profile` to run nsight compute profiling for first invocation of `global_mem_mergesort_step`
         kernel within the linear buffer version of program (nsight compute MUST be installed for
         this to work)
