@@ -1,9 +1,9 @@
 
-# Instructions (Linux Version of This Program)
+# Instructions (ROCm Linux Version of This Program)
 
 Build dependencies include;
 
-1. Latest complete CUDA toolkit (CUDA 12.4 as of time of writing)
+1. Latest complete ROCm and corresponding amdgpu dkms from repo.radeon.com (ROCm 6.2.1 as of time of writing)
 
 2. GNU Compiler Collection
 
@@ -18,30 +18,22 @@ Open a terminal interface and run:
        the circular buffer version was designed for running fast on older GPU architectures.)
 - `make run_tests` to run kernel unit tests for linear buffer version of program
 - `make run_tests_circ_buff` to run kernel unit tests for circular buffer version of program
-- `make profile` to run nsight compute profiling for first invocation of `global_mem_mergesort_step`
-        kernel within the linear buffer version of program (nsight compute MUST be installed for
-        this to work)
-- `make profile_circ_buff` to run nsight compute profiling for first invocation of `global_mem_mergesort_step`
-        kernel within the circular buffer version of program (nsight compute MUST be installed for
-        this to work)
 
 Note: only Linux distributions are supported for now on this main branch.
 
 # TODO
 
-1. Add more detailed comments in at least the `.cu` source code files
+1. Add more detailed comments in at least the `.hip` source code files
 
 2. Maybe add more details in this README?
 
 3. <s>Add support for sorting 64-bit integer types as compile-time feature</s> Author deems
       this not important; as this is only essentially a demo program.
 
-4. <s>Add unit tests at least for the CUDA kernels - Author is finding this difficult;
+4. <s>Add unit tests at least for the HIP kernels - Author is finding this difficult;
       any outside help would be appreciated; more than willing to refactor code to
       make unit tests easier :)</s> Done on May 13 2024 :)
 
 5. <s>Prevent people from entering too large array sizes based on max total VRAM (total VRAM - 512 mib basically).</s>
       Done on May 17 2024, and didn't even have to use any special formulas :)
-
-6. Port over application to Windows maybe?
 
