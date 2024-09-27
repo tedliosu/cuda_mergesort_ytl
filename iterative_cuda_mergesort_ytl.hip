@@ -1,4 +1,3 @@
-#include "hip/hip_runtime.h"
 
 #include <stdbool.h>
 #include "iterative_cuda_mergesort_ytl.h"

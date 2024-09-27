@@ -1,4 +1,3 @@
-#include "hip/hip_runtime.h"
 
 /*!
  * Auxillary header file containing CUDA kernel function prototypes and key kernel
