@@ -1,6 +1,4 @@
 main
 main_circ_buff
-global_mem_mergesort_step_first.ncu-rep
-global_mem_mergesort_step_first_circ_buff.ncu-rep
 tests
 tests_circ_buff
