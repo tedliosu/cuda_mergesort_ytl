@@ -19,7 +19,7 @@ Open a terminal interface and run:
 - `make run_tests` to run kernel unit tests for linear buffer version of program
 - `make run_tests_circ_buff` to run kernel unit tests for circular buffer version of program
 
-Note: only Linux distributions are supported for now on this main branch.
+Note: only Linux distributions are supported for now on this branch.
 
 # TODO
 
