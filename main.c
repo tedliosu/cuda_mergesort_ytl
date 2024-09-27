@@ -23,9 +23,9 @@
 // Seed for pseudorandom number generator that creates the array to be sorted
 #define RAND_NUM_SEED 1234
 // Think twice before changing any macro definition below this comment.
-#define NUM_NS_PER_SEC 1000000000.0
-#define MAX_USER_INPUT_LEN 21
-#define USER_INPUT_NUM_BASE 10
+// #define NUM_NS_PER_SEC 1000000000.0
+// #define MAX_USER_INPUT_LEN 21
+// #define USER_INPUT_NUM_BASE 10
 
 /* Driver program to test parallel mergesort */
 int main() {

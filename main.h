@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 
 // Think twice before changing any macro definition below this comment.
 #define NUM_NS_PER_SEC 1000000000.0

@@ -1011,16 +1011,13 @@ __global__ void global_mem_mergesort_step(double *aux_array,
 void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
 
     double *arr_on_device, *arr_aux_on_device;
-    cudaEvent_t start_on_device, stop_on_device;
-    float sort_time_without_host_transfers = 0.0f;
-    CHECK(cudaEventCreate(&start_on_device));
-    CHECK(cudaEventCreate(&stop_on_device));
+    struct timespec start_gpu_work, end_gpu_work;
     CHECK(cudaMalloc(&arr_on_device, arr_len * sizeof(*arr_on_device)));
     CHECK(cudaMalloc(&arr_aux_on_device, arr_len * sizeof(*arr_aux_on_device)));
 
     CHECK(cudaMemcpy(arr_aux_on_device, arr, arr_len * sizeof(*arr), cudaMemcpyHostToDevice));
 
-    CHECK(cudaEventRecord(start_on_device));
+    timespec_get(&start_gpu_work, TIME_UTC);
 
     dim3 block_size_shared_mem_sort(THREADS_PER_BLOCK_SHARED_MEM_SORT, 1, 1);
     dim3 grid_size_shared_mem_sort(1 + ((arr_len - 1) / (TILE_SIZE_SHARED_MEM_SORT)), 1, 1);
@@ -1065,19 +1062,19 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
 
     }
 
-    CHECK(cudaEventRecord(stop_on_device));
-    CHECK(cudaEventSynchronize(stop_on_device));
-    CHECK(cudaEventElapsedTime(&sort_time_without_host_transfers, start_on_device, stop_on_device));
+    CHECK(cudaDeviceSynchronize());
+    timespec_get(&end_gpu_work, TIME_UTC);
 
     printf("Time took for mergesort to complete "
-               "WITHOUT copy from and to host: %f seconds.\n", sort_time_without_host_transfers / NUM_MS_PER_SEC);
+               "WITHOUT copy from and to host: %lf seconds.\n",
+               difftime(end_gpu_work.tv_sec, start_gpu_work.tv_sec) +
+                  (((double)(end_gpu_work.tv_nsec - start_gpu_work.tv_nsec)) /
+                                                                NUM_NS_PER_SEC));
 
     CHECK(cudaMemcpy(arr, arr_on_device, arr_len * sizeof(*arr_on_device), cudaMemcpyDeviceToHost));
 
     CHECK(cudaFree(arr_on_device));
     CHECK(cudaFree(arr_aux_on_device));
-    CHECK(cudaEventDestroy(start_on_device));
-    CHECK(cudaEventDestroy(stop_on_device));
 
 }
 
