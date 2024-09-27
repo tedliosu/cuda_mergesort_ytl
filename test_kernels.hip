@@ -166,8 +166,8 @@ void setup_dynamic_arrays_n_prng(long input_arr_size) {
     init_xoshiro256starstar();
     test_input_array = (double *) malloc(sizeof(*test_input_array) * input_arr_size);
     test_output_array = (double *) malloc(sizeof(*test_output_array) * input_arr_size);
-    CHECK(cudaMalloc(&test_input_array_gpu, sizeof(*test_input_array_gpu) * input_arr_size));
-    CHECK(cudaMalloc(&test_output_array_gpu, sizeof(*test_output_array_gpu) * input_arr_size));
+    CHECK(hipMalloc(&test_input_array_gpu, sizeof(*test_input_array_gpu) * input_arr_size));
+    CHECK(hipMalloc(&test_output_array_gpu, sizeof(*test_output_array_gpu) * input_arr_size));
 
 }
 
@@ -228,8 +228,8 @@ void teardown_step_kerns_tests(void) {
 
     free(test_input_array);
     free(test_output_array);
-    CHECK(cudaFree(test_input_array_gpu));
-    CHECK(cudaFree(test_output_array_gpu));
+    CHECK(hipFree(test_input_array_gpu));
+    CHECK(hipFree(test_output_array_gpu));
 
 }
 
@@ -370,8 +370,8 @@ ParameterizedTest(struct glob_merg_step_kern_param_tupl *test_tupl, params, glob
 
     }
 
-    CHECK(cudaMemcpy(test_input_array_gpu, test_input_array,
-                        test_tupl->total_array_size * sizeof(*test_input_array), cudaMemcpyHostToDevice));
+    CHECK(hipMemcpy(test_input_array_gpu, test_input_array,
+                        test_tupl->total_array_size * sizeof(*test_input_array), hipMemcpyHostToDevice));
 
     long global_mem_sort_buff_size_per_arr = TILE_SIZE_GLOBAL_MEM_SORT;
     long arr_len_per_block = global_mem_sort_buff_size_per_arr * MAX_NUM_MERGE_PHASES_PER_TBLOCK_TESTS;
@@ -387,13 +387,13 @@ ParameterizedTest(struct glob_merg_step_kern_param_tupl *test_tupl, params, glob
                                                  &(test_tupl->sorted_subarr_init_max_size), &max_blocks_per_virtual_grid,
                                                       &global_mem_sort_buff_size_per_arr, &(test_tupl->sort_non_descending)};
     
-    CHECK(cudaLaunchKernel((void*)global_mem_mergesort_step, grid_size_global_mem_sort,
+    CHECK(hipLaunchKernel((void*)global_mem_mergesort_step, grid_size_global_mem_sort,
                                    block_size_global_mem_sort, global_mem_sort_kernel_args,
                                    NUM_TILES_GLOBAL_MEM_SORT * global_mem_sort_buff_size_per_arr *
                                                                              sizeof(*test_output_array_gpu), NULL));
 
-    CHECK(cudaMemcpy(test_output_array, test_output_array_gpu,
-                        test_tupl->total_array_size * sizeof(*test_output_array_gpu), cudaMemcpyDeviceToHost));
+    CHECK(hipMemcpy(test_output_array, test_output_array_gpu,
+                        test_tupl->total_array_size * sizeof(*test_output_array_gpu), hipMemcpyDeviceToHost));
 
 
     cr_assert(is_sorted_properly(test_output_array, test_tupl->total_array_size,
@@ -413,8 +413,8 @@ ParameterizedTest(struct shared_merg_step_kern_param_tupl *test_tupl, params, sh
 
     fill_array_with_prng(test_input_array, test_tupl->arr_len);
 
-    CHECK(cudaMemcpy(test_input_array_gpu, test_input_array,
-                        test_tupl->arr_len * sizeof(*test_input_array), cudaMemcpyHostToDevice));
+    CHECK(hipMemcpy(test_input_array_gpu, test_input_array,
+                        test_tupl->arr_len * sizeof(*test_input_array), hipMemcpyHostToDevice));
     
     dim3 block_size_shared_mem_sort(THREADS_PER_BLOCK_SHARED_MEM_SORT, 1, 1);
     dim3 grid_size_shared_mem_sort(1 + ((test_tupl->arr_len - 1) / (TILE_SIZE_SHARED_MEM_SORT)), 1, 1);
@@ -423,13 +423,13 @@ ParameterizedTest(struct shared_merg_step_kern_param_tupl *test_tupl, params, sh
                                              &(test_tupl->arr_len), &shared_mem_sort_buff_size,
                                                                         &(test_tupl->sort_non_descending)};
 
-    CHECK(cudaLaunchKernel((void*)shared_mem_mergesort_subarrays, grid_size_shared_mem_sort,
+    CHECK(hipLaunchKernel((void*)shared_mem_mergesort_subarrays, grid_size_shared_mem_sort,
                               block_size_shared_mem_sort, shared_mem_sort_kernel_args,
                                  NUM_ARRAYS_PER_MERGE * shared_mem_sort_buff_size *
                                                      sizeof(*test_output_array_gpu), NULL));
 
-    CHECK(cudaMemcpy(test_output_array, test_output_array_gpu,
-                        test_tupl->arr_len * sizeof(*test_output_array), cudaMemcpyDeviceToHost));
+    CHECK(hipMemcpy(test_output_array, test_output_array_gpu,
+                        test_tupl->arr_len * sizeof(*test_output_array), hipMemcpyDeviceToHost));
 
     cr_assert(is_sorted_properly(test_output_array, test_tupl->arr_len,
                                                       shared_mem_sort_buff_size,

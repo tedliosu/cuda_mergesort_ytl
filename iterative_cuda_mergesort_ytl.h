@@ -1,10 +1,11 @@
+#include "hip/hip_runtime.h"
 
 /*!
  * Auxillary header file containing CUDA kernel function prototypes and key kernel
  * parameters
  */
 
-#include <cuda_runtime.h>
+#include <hip/hip_runtime.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -39,9 +40,9 @@
  */
 #define CHECK(call)                                                       \
   {                                                                       \
-    cudaError_t err;                                                      \
-    if ((err = (call)) != cudaSuccess) {                                  \
-      fprintf(stderr, "Got error %s at %s:%d\n", cudaGetErrorString(err), \
+    hipError_t err;                                                      \
+    if ((err = (call)) != hipSuccess) {                                  \
+      fprintf(stderr, "Got error %s at %s:%d\n", hipGetErrorString(err), \
               __FILE__, __LINE__);                                        \
       exit(EXIT_FAILURE);                                                 \
     }                                                                     \

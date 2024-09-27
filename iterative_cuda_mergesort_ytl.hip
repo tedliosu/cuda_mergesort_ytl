@@ -1,3 +1,4 @@
+#include "hip/hip_runtime.h"
 
 #include <stdbool.h>
 #include "iterative_cuda_mergesort_ytl.h"
@@ -1012,10 +1013,10 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
 
     double *arr_on_device, *arr_aux_on_device;
     struct timespec start_gpu_work, end_gpu_work;
-    CHECK(cudaMalloc(&arr_on_device, arr_len * sizeof(*arr_on_device)));
-    CHECK(cudaMalloc(&arr_aux_on_device, arr_len * sizeof(*arr_aux_on_device)));
+    CHECK(hipMalloc(&arr_on_device, arr_len * sizeof(*arr_on_device)));
+    CHECK(hipMalloc(&arr_aux_on_device, arr_len * sizeof(*arr_aux_on_device)));
 
-    CHECK(cudaMemcpy(arr_aux_on_device, arr, arr_len * sizeof(*arr), cudaMemcpyHostToDevice));
+    CHECK(hipMemcpy(arr_aux_on_device, arr, arr_len * sizeof(*arr), hipMemcpyHostToDevice));
 
     timespec_get(&start_gpu_work, TIME_UTC);
 
@@ -1025,7 +1026,7 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
     void *shared_mem_sort_kernel_args[] = {&arr_aux_on_device, &arr_on_device,
                                              &arr_len, &shared_mem_sort_buff_size, &sort_non_descending};
 
-    CHECK(cudaLaunchKernel((void*)shared_mem_mergesort_subarrays, grid_size_shared_mem_sort,
+    CHECK(hipLaunchKernel((void*)shared_mem_mergesort_subarrays, grid_size_shared_mem_sort,
                               block_size_shared_mem_sort, shared_mem_sort_kernel_args,
                                  NUM_ARRAYS_PER_MERGE * shared_mem_sort_buff_size * sizeof(*arr_on_device), NULL));
 
@@ -1051,7 +1052,7 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
                                                  &current_sorted_size, &max_blocks_per_virtual_grid,
                                                  &global_mem_sort_buff_size_per_arr, &sort_non_descending};
 
-         CHECK(cudaLaunchKernel((void*)global_mem_mergesort_step, grid_size_global_mem_sort,
+         CHECK(hipLaunchKernel((void*)global_mem_mergesort_step, grid_size_global_mem_sort,
                                    block_size_global_mem_sort, global_mem_sort_kernel_args,
                                    NUM_TILES_GLOBAL_MEM_SORT * global_mem_sort_buff_size_per_arr *
                                                                              sizeof(*arr_on_device), NULL));
@@ -1062,7 +1063,7 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
 
     }
 
-    CHECK(cudaDeviceSynchronize());
+    CHECK(hipDeviceSynchronize());
     timespec_get(&end_gpu_work, TIME_UTC);
 
     printf("Time took for mergesort to complete "
@@ -1071,10 +1072,10 @@ void parallel_merge_sort(double *arr, long arr_len, bool sort_non_descending) {
                   (((double)(end_gpu_work.tv_nsec - start_gpu_work.tv_nsec)) /
                                                                 NUM_NS_PER_SEC));
 
-    CHECK(cudaMemcpy(arr, arr_on_device, arr_len * sizeof(*arr_on_device), cudaMemcpyDeviceToHost));
+    CHECK(hipMemcpy(arr, arr_on_device, arr_len * sizeof(*arr_on_device), hipMemcpyDeviceToHost));
 
-    CHECK(cudaFree(arr_on_device));
-    CHECK(cudaFree(arr_aux_on_device));
+    CHECK(hipFree(arr_on_device));
+    CHECK(hipFree(arr_aux_on_device));
 
 }
 
@@ -1100,7 +1101,7 @@ long get_max_arr_len_for_dev(size_t arr_elem_size) {
 
     size_t free_vram = 0;
 
-    CHECK(cudaMemGetInfo(&free_vram, NULL));
+    CHECK(hipMemGetInfo(&free_vram, NULL));
 
     arr_len = ((long) free_vram - FREE_VRAM_BUFFER_ZONE_BYTES) /
                   (((long) arr_elem_size) * NUM_ARRAYS_PER_MERGE);
