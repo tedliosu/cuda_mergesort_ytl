@@ -55,7 +55,7 @@ int main() {
 
       if (strtol_error_status != 0 || remaining_non_ulong[0] != '\0' ||
           input_array_length < 1 ||
-          input_array_length > get_max_arr_len_for_dev(sizeof(double))) {
+          (unsigned long) input_array_length > get_max_arr_len_for_dev(sizeof(double))) {
         fgets_return_stat = NULL;
 
         printf(

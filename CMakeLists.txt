@@ -19,17 +19,13 @@ set_target_properties(CudaMergeSortYTLAll
         CUDA_ARCHITECTURES native
         OUTPUT_NAME "main"
 )
-target_link_libraries(CudaMergeSortYTLAll PRIVATE -lm)
 target_compile_options(CudaMergeSortYTLAll PRIVATE
-                       $<$<COMPILE_LANGUAGE:C>:
-                       -O3
-                       --debug
-                       >
                        $<$<COMPILE_LANGUAGE:CUDA>:
                        --relocatable-device-code=true
                        --generate-line-info
                        --ptxas-options --verbose
                        >)
+target_link_options(CudaMergeSortYTLAll PRIVATE "LINKER:/SUBSYSTEM:CONSOLE")
 
 
 # Build stuff for circular buffer version of program
@@ -51,18 +47,14 @@ set_target_properties(CudaMergeSortYTLCircBuff
         CUDA_ARCHITECTURES native
         OUTPUT_NAME "main_circ_buff"
 )
-target_link_libraries(CudaMergeSortYTLCircBuff PRIVATE -lm)
 target_compile_options(CudaMergeSortYTLCircBuff PRIVATE
-                       $<$<COMPILE_LANGUAGE:C>:
-                       -O3
-                       --debug
-                       >
                        $<$<COMPILE_LANGUAGE:CUDA>:
                        -DCIRC_BUFF
                        --relocatable-device-code=true
                        --generate-line-info
                        --ptxas-options --verbose
                        >)
+target_link_options(CudaMergeSortYTLCircBuff PRIVATE "LINKER:/SUBSYSTEM:CONSOLE")
 
 
 

@@ -1097,16 +1097,16 @@ uint64_t double_to_u64_conv(double in_val) {
 
 }
 
-long get_max_arr_len_for_dev(size_t arr_elem_size) {
+unsigned long get_max_arr_len_for_dev(size_t arr_elem_size) {
 
-    long arr_len = 0;
+    unsigned long arr_len = 0;
 
     size_t free_vram = 0;
 
     CHECK(cudaMemGetInfo(&free_vram, NULL));
 
-    arr_len = ((long) free_vram - FREE_VRAM_BUFFER_ZONE_BYTES) /
-                  (((long) arr_elem_size) * NUM_ARRAYS_PER_MERGE);
+    arr_len = ((unsigned long) free_vram - FREE_VRAM_BUFFER_ZONE_BYTES) /
+                  (((unsigned long) arr_elem_size) * NUM_ARRAYS_PER_MERGE);
 
     return arr_len;
 
