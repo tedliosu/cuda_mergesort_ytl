@@ -13,7 +13,7 @@
       "variables": [
         {
           "name": "CMAKE_CUDA_ARCHITECTURES",
-          "value": "native",
+          "value": "all",
           "type": "STRING"
         }
       ]
@@ -31,7 +31,7 @@
       "variables": [
         {
           "name": "CMAKE_CUDA_ARCHITECTURES",
-          "value": "native",
+          "value": "all",
           "type": "STRING"
         }
       ]

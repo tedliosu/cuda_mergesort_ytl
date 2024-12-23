@@ -16,7 +16,7 @@ set_target_properties(CudaMergeSortYTLAll
         CUDA_STANDARD 11
         CUDA_STANDARD_REQUIRED ON
         CUDA_RESOLVE_DEVICE_SYMBOLS ON
-        CUDA_ARCHITECTURES native
+        CUDA_ARCHITECTURES all
         OUTPUT_NAME "main"
 )
 target_compile_options(CudaMergeSortYTLAll PRIVATE
@@ -44,7 +44,7 @@ set_target_properties(CudaMergeSortYTLCircBuff
         CUDA_STANDARD 11
         CUDA_STANDARD_REQUIRED ON
         CUDA_RESOLVE_DEVICE_SYMBOLS ON
-        CUDA_ARCHITECTURES native
+        CUDA_ARCHITECTURES all
         OUTPUT_NAME "main_circ_buff"
 )
 target_compile_options(CudaMergeSortYTLCircBuff PRIVATE
