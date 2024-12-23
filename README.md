@@ -5,17 +5,13 @@ Build dependencies include;
 
 1. Latest complete CUDA toolkit (CUDA 12.6 as of time of writing)
 
-2. Visual Studio Community (version 2022 as of time of writing)
+2. CMake minimum version 3.24
 
-Open a terminal interface and run:
+3. Visual Studio Community (version 2022 as of time of writing)
 
-- `make run` to run linear buffer version of program
-- `make run_circ_buff` to run circular buffer version of program (runs slower than linear version
-       due to implementation overly-aggressively attempting to conserve memory bandwidth; Author
-       thought this version would perform better than linear buffer version but unfortunately
-       the circular buffer version was designed for running fast on older GPU architectures.)
+Open up this repository within Visual Studio Community as a folder, making sure that Visual Studio Community is already configured to handle CMake-based projects per [this article](https://learn.microsoft.com/en-us/cpp/build/cmake-projects-in-visual-studio?view=msvc-170). Then the options to build either `main.exe` or `main_circ_buff.exe` should appear in the Startup Item dropdown in the toolbar, and the you may build and run either in either Release with Debug info mode or Debug mode.  The circular buffer version of this program runs slower than linear version due to implementation overly-aggressively attempting to conserve memory bandwidth; Author thought this version would perform better than linear buffer version but unfortunately the circular buffer version was designed for running fast on older GPU architectures.
 
-Note: only Linux distributions are supported for now on this main branch.
+Note: this branch has NOT been tested to be built with Linux; please refer to the `main` branch of this repository for the Linux version of this program.
 
 # TODO
 
