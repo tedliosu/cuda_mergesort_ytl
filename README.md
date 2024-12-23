@@ -43,5 +43,6 @@ Note: only Linux distributions are supported for now on this main branch.
 5. <s>Prevent people from entering too large array sizes based on max total VRAM (total VRAM - 512 mib basically).</s>
       Done on May 17 2024, and didn't even have to use any special formulas :)
 
-6. Port over application to Windows maybe?
+6. <s>Port over application to Windows maybe?</s>
+      Done on December 23, 2024 for just the main linear buffer and circular buffer versions of the CLI application; the Windows CLI application is under the `cmake-win` branch. Unit tests were NOT ported over due to unit testing framework used not having a pre-built Windows version and being a hassle to compile for Windows.
 
