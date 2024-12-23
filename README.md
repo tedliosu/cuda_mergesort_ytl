@@ -1,13 +1,11 @@
 
-# Instructions (Linux Version of This Program)
+# Instructions (Windows Version of This Program)
 
 Build dependencies include;
 
-1. Latest complete CUDA toolkit (CUDA 12.4 as of time of writing)
+1. Latest complete CUDA toolkit (CUDA 12.6 as of time of writing)
 
-2. GNU Compiler Collection
-
-3. [Criterion](https://github.com/Snaipe/Criterion) for running the unit tests
+2. Visual Studio Community (version 2022 as of time of writing)
 
 Open a terminal interface and run:
 
@@ -16,14 +14,6 @@ Open a terminal interface and run:
        due to implementation overly-aggressively attempting to conserve memory bandwidth; Author
        thought this version would perform better than linear buffer version but unfortunately
        the circular buffer version was designed for running fast on older GPU architectures.)
-- `make run_tests` to run kernel unit tests for linear buffer version of program
-- `make run_tests_circ_buff` to run kernel unit tests for circular buffer version of program
-- `make profile` to run nsight compute profiling for first invocation of `global_mem_mergesort_step`
-        kernel within the linear buffer version of program (nsight compute MUST be installed for
-        this to work)
-- `make profile_circ_buff` to run nsight compute profiling for first invocation of `global_mem_mergesort_step`
-        kernel within the circular buffer version of program (nsight compute MUST be installed for
-        this to work)
 
 Note: only Linux distributions are supported for now on this main branch.
 
@@ -42,6 +32,3 @@ Note: only Linux distributions are supported for now on this main branch.
 
 5. <s>Prevent people from entering too large array sizes based on max total VRAM (total VRAM - 512 mib basically).</s>
       Done on May 17 2024, and didn't even have to use any special formulas :)
-
-6. Port over application to Windows maybe?
-
