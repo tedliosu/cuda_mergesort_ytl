@@ -16,5 +16,5 @@
 
 double u64_to_double_conv(uint64_t in_val);
 uint64_t double_to_u64_conv(double in_val);
-unsigned long get_max_arr_len_for_dev(size_t arr_elem_size);
+size_t get_max_arr_len_for_dev(size_t arr_elem_size);
 void parallel_merge_sort(double* arr, long arr_len, bool sort_non_descending);
