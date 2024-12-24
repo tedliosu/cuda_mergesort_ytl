@@ -65,17 +65,17 @@ profile: clean all
 	sudo --set-home $(shell which ncu) --kernel-name $(PROF_KERN_NAME) \
 		--launch-count 1 --set full --force-overwrite \
 		--export $(PROF_RES_FILE_BASENAME) ./$(MAIN_EXE_NAME_LIN_BUFF)
+	sudo --set-home chown ${USER}:${USER} ./$(PROF_RES_FILE_BASENAME).ncu-rep
 
 profile_circ_buff: clean circ_buff
 	$(info $(shell echo "---Please enter sudo password when prompted---"))
 	sudo --set-home $(shell which ncu) --kernel-name $(PROF_KERN_NAME) \
 		--launch-count 1 --set full --force-overwrite \
 		--export $(PROF_RES_FILE_BASE_CIRC_BUFF) ./$(MAIN_EXE_NAME_CIRC_BUFF)
-
+	sudo --set-home chown ${USER}:${USER} ./$(PROF_RES_FILE_BASE_CIRC_BUFF).ncu-rep
 
 clean:
-	$(info $(shell echo "---Please enter sudo password when prompted---"))
-	sudo --set-home rm -rf $(MAIN_EXE_NAME_LIN_BUFF) $(TESTS_EXE_NAME_LIN_BUFF) \
+	rm -rf $(MAIN_EXE_NAME_LIN_BUFF) $(TESTS_EXE_NAME_LIN_BUFF) \
 			$(MAIN_EXE_NAME_CIRC_BUFF) $(TESTS_EXE_NAME_CIRC_BUFF) \
 			$(PROF_RES_FILE_BASENAME).ncu-rep $(PROF_RES_FILE_BASE_CIRC_BUFF).ncu-rep
 
